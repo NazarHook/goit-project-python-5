@@ -64,7 +64,7 @@ class Note:
             f"    created: {self.created_at.strftime('%d.%m.%Y %H:%M')}"
         )
 
-
+ 
 class NoteBook(UserDict):
     """A collection of Notes keyed by their numeric id."""
 
