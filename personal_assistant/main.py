@@ -18,6 +18,7 @@ Available commands:
   Contacts:
     add-contact <name> <phone>              - add a contact or a phone to an existing one
     change-phone <name> <old> <new>         - change a contact's phone number
+    remove-phone <name> <phone>             - remove a phone number from a contact
     phone <name>                            - show a contact's phone numbers
     add-birthday <name> <DD.MM.YYYY>        - add a birthday to a contact
     edit-birthday <name> <DD.MM.YYYY>       - change a contact's birthday
@@ -93,6 +94,18 @@ def change_phone(args, book: AddressBook):
         return f"Contact '{name}' not found."
     record.edit_phone(old_phone, new_phone)
     return "Phone number updated."
+
+
+@input_error
+def remove_phone(args, book: AddressBook):
+    if len(args) != 2:
+        return "Usage: remove-phone <name> <phone>"
+    name, phone = args
+    record = book.find(name)
+    if record is None:
+        return f"Contact '{name}' not found."
+    record.remove_phone(phone)
+    return "Phone number removed."
 
 
 @input_error
@@ -305,6 +318,8 @@ def main():
             print(add_contact(args, book))
         elif command == "change-phone":
             print(change_phone(args, book))
+        elif command == "remove-phone":
+            print(remove_phone(args, book))
         elif command == "phone":
             print(show_phone(args, book))
         elif command == "all-contacts":
