@@ -45,13 +45,13 @@ def add_contact(args, book: AddressBook):
         return "Usage: add-contact <name> <phone>"
     name, phone, *_ = args
     record = book.find(name)
-    message = "Contact updated."
     if record is None:
-        record = Record(name)
-        book.add_record(record)
-        message = "Contact added."
+        new_record = Record(name)
+        new_record.add_phone(phone)  # validate before inserting into the book
+        book.add_record(new_record)
+        return "Contact added."
     record.add_phone(phone)
-    return message
+    return "Contact updated."
 
 
 @input_error
