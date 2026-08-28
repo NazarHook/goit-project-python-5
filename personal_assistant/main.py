@@ -6,12 +6,24 @@ Run with:
 Type `help` inside the program to see the list of available commands.
 """
 
+from colorama import init as colorama_init, Fore
+
 from address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
 from note_book import NoteBook, NoteError
 from storage import save_data, load_data
 
+colorama_init(autoreset=True)
+
 CONTACTS_FILE = "address_book.pkl"
 NOTES_FILE = "note_book.pkl"
+
+# Substrings that mark a result as a problem rather than a success, used by
+# output() below to color CLI feedback (red for problems, green otherwise).
+_PROBLEM_MARKERS = (
+    "usage:", "not found", "already exists", "invalid", "cannot",
+    "error", "no matching", "no birthdays", "no notes", "has no",
+    "unknown command",
+)
 
 HELP_TEXT = """\
 Available commands:
@@ -60,6 +72,21 @@ def input_error(func):
             return f"Error: {e}" if str(e) else "Invalid input for that command."
 
     return wrapper
+
+
+def output(message):
+    """Print a command result, colored green for success / red for problems.
+
+    Multi-line output (listings, help text) is printed as-is - the
+    red/green distinction only makes sense for a single status line.
+    """
+    if message is None:
+        return
+    if "\n" in message:
+        print(message)
+        return
+    color = Fore.RED if any(marker in message.lower() for marker in _PROBLEM_MARKERS) else Fore.GREEN
+    print(color + message)
 
 
 def parse_input(user_input):
@@ -351,7 +378,7 @@ def main():
     book = load_data(CONTACTS_FILE, AddressBook)
     notes = load_data(NOTES_FILE, NoteBook)
 
-    print("Welcome to the Personal Assistant!")
+    output("Welcome to the Personal Assistant!")
     print("Type 'help' to see the list of commands.")
 
     while True:
@@ -361,62 +388,62 @@ def main():
         if command in ("close", "exit"):
             save_data(book, CONTACTS_FILE)
             save_data(notes, NOTES_FILE)
-            print("Data saved. Good bye!")
+            output("Data saved. Good bye!")
             break
         elif command == "hello":
-            print("How can I help you?")
+            output("How can I help you?")
         elif command == "help":
-            print(HELP_TEXT)
+            output(HELP_TEXT)
         elif command == "add-contact":
-            print(add_contact(args, book))
+            output(add_contact(args, book))
         elif command == "change-phone":
-            print(change_phone(args, book))
+            output(change_phone(args, book))
         elif command == "remove-phone":
-            print(remove_phone(args, book))
+            output(remove_phone(args, book))
         elif command == "phone":
-            print(show_phone(args, book))
+            output(show_phone(args, book))
         elif command == "all-contacts":
-            print(show_all_contacts(book))
+            output(show_all_contacts(book))
         elif command == "search-contact":
-            print(search_contacts(args, book))
+            output(search_contacts(args, book))
         elif command == "add-birthday":
-            print(add_birthday(args, book))
+            output(add_birthday(args, book))
         elif command == "edit-birthday":
-            print(edit_birthday(args, book))
+            output(edit_birthday(args, book))
         elif command == "show-birthday":
-            print(show_birthday(args, book))
+            output(show_birthday(args, book))
         elif command == "birthdays":
-            print(birthdays(args, book))
+            output(birthdays(args, book))
         elif command == "add-email":
-            print(add_email(args, book))
+            output(add_email(args, book))
         elif command == "edit-email":
-            print(edit_email(args, book))
+            output(edit_email(args, book))
         elif command == "add-address":
-            print(add_address(args, book))
+            output(add_address(args, book))
         elif command == "delete-contact":
-            print(delete_contact(args, book))
+            output(delete_contact(args, book))
         elif command == "add-note":
-            print(add_note(args, notes))
+            output(add_note(args, notes))
         elif command == "edit-note":
-            print(edit_note(args, notes))
+            output(edit_note(args, notes))
         elif command == "edit-title":
-            print(edit_title(args, notes))
+            output(edit_title(args, notes))
         elif command == "add-tag":
-            print(add_tag(args, notes))
+            output(add_tag(args, notes))
         elif command == "remove-tag":
-            print(remove_tag(args, notes))
+            output(remove_tag(args, notes))
         elif command == "delete-note":
-            print(delete_note(args, notes))
+            output(delete_note(args, notes))
         elif command == "find-note":
-            print(find_notes(args, notes))
+            output(find_notes(args, notes))
         elif command == "search-notes-tag":
-            print(search_notes_by_tag(args, notes))
+            output(search_notes_by_tag(args, notes))
         elif command == "all-notes":
-            print(show_all_notes(notes))
+            output(show_all_notes(notes))
         elif command == "":
             continue
         else:
-            print("Unknown command. Type 'help' to see the list of commands.")
+            output("Unknown command. Type 'help' to see the list of commands.")
 
 
 if __name__ == "__main__":

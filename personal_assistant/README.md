@@ -12,6 +12,8 @@ tagged notes, and saves both between sessions.
 - **Persistence**: data is automatically saved (via `pickle`) to
   `~/.personal_assistant/` and reloaded on the next run, so nothing is lost
   when you close the program.
+- **Colored feedback**: command results are printed in green on success and
+  red on errors/usage problems (via `colorama`).
 
 ## Project structure
 
@@ -21,12 +23,12 @@ tagged notes, and saves both between sessions.
 | `address_book.py`  | `Record` / `AddressBook` classes for contacts          |
 | `note_book.py`     | `Note` / `NoteBook` classes for notes and tags          |
 | `storage.py`       | Save/load helpers (pickle) used for persistence        |
-| `requirements.txt` | External dependencies (none - standard library only)   |
+| `requirements.txt` | External dependencies (`colorama`, for colored CLI output) |
 
 ## Requirements
 
 - Python 3.10+
-- No external dependencies.
+- `colorama` (install with `pip install -r requirements.txt`)
 
 ## How to run
 
