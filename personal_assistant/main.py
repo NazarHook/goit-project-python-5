@@ -186,11 +186,18 @@ def add_address(args, book: AddressBook):
 @input_error
 def add_note(args, notes: NoteBook):
     if not args:
-        return "Usage: add-note <title> [#tag ...]"
+        return "Usage: add-note <title> [| <text>] [#tag ...]"
     tags = [a for a in args if a.startswith("#")]
-    title_parts = [a for a in args if not a.startswith("#")]
+    rest = [a for a in args if not a.startswith("#")]
+    text = ""
+    if "|" in rest:
+        i = rest.index("|")
+        title_parts, text_parts = rest[:i], rest[i + 1:]
+        text = " ".join(text_parts)
+    else:
+        title_parts = rest
     title = " ".join(title_parts) if title_parts else args[0]
-    note = notes.add_note(title, tags=tags)
+    note = notes.add_note(title, text=text, tags=tags)
     return f"Note added with id {note.id}."
 
 
@@ -262,7 +269,7 @@ Available commands:
     all-contacts                            - show all contacts
 
   Notes:
-    add-note <title> [#tag ...]             - add a note (optionally with tags)
+    add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
     edit-note <id> <new text...>            - edit a note's text
     delete-note <id>                        - delete a note
     find-note <keyword>                     - find notes by title or text
