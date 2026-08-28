@@ -127,6 +127,20 @@ def add_email(args, book: AddressBook):
 
 
 @input_error
+def edit_email(args, book: AddressBook):
+    if len(args) != 2:
+        return "Usage: edit-email <name> <new_email>"
+    name, new_email = args
+    record = book.find(name)
+    if record is None:
+        return f"Contact '{name}' not found."
+    if not record.email:
+        return f"{name} has no email yet. Use add-email to set one."
+    record.add_email(new_email)
+    return "Email updated."
+
+
+@input_error
 def add_address(args, book: AddressBook):
     if len(args) < 2:
         return "Usage: add-address <name> <address...>"
@@ -227,6 +241,7 @@ Available commands:
     show-birthday <name>                    - show a contact's birthday
     birthdays [days]                        - show birthdays in the next N days (default 7)
     add-email <name> <email>                - add an email to a contact
+    edit-email <name> <new_email>           - change a contact's email
     add-address <name> <address...>         - add an address to a contact
     delete-contact <name>                   - delete a contact
     all-contacts                            - show all contacts
@@ -288,6 +303,8 @@ def main():
             print(birthdays(args, book))
         elif command == "add-email":
             print(add_email(args, book))
+        elif command == "edit-email":
+            print(edit_email(args, book))
         elif command == "add-address":
             print(add_address(args, book))
         elif command == "delete-contact":
