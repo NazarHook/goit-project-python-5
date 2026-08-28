@@ -98,8 +98,9 @@ class Record:
     # ---- phones -----------------------------------------------------
     def add_phone(self, phone):
         new_phone = Phone(phone)
-        if new_phone not in self.phones:
-            self.phones.append(new_phone)
+        if new_phone in self.phones:
+            raise FieldError(f"Phone '{new_phone.value}' already exists for {self.name.value}.")
+        self.phones.append(new_phone)
         return new_phone
 
     def remove_phone(self, phone):
