@@ -13,6 +13,35 @@ from storage import save_data, load_data
 CONTACTS_FILE = "address_book.pkl"
 NOTES_FILE = "note_book.pkl"
 
+HELP_TEXT = """\
+Available commands:
+  Contacts:
+    add-contact <name> <phone>              - add a contact or a phone to an existing one
+    change-phone <name> <old> <new>         - change a contact's phone number
+    phone <name>                            - show a contact's phone numbers
+    add-birthday <name> <DD.MM.YYYY>        - add a birthday to a contact
+    edit-birthday <name> <DD.MM.YYYY>       - change a contact's birthday
+    show-birthday <name>                    - show a contact's birthday
+    birthdays [days]                        - show birthdays in the next N days (default 7)
+    add-email <name> <email>                - add an email to a contact
+    edit-email <name> <new_email>           - change a contact's email
+    add-address <name> <address...>         - add an address to a contact
+    delete-contact <name>                   - delete a contact
+    all-contacts                            - show all contacts
+
+  Notes:
+    add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
+    edit-note <id> <new text...>            - edit a note's text
+    delete-note <id>                        - delete a note
+    find-note <keyword>                     - find notes by title or text
+    search-notes-tag <tag>                  - find notes by tag
+    all-notes                               - show all notes
+
+  General:
+    help                                    - show this help message
+    close / exit                            - save data and exit the assistant
+"""
+
 
 def input_error(func):
     """Decorator that turns expected errors into friendly messages."""
@@ -250,38 +279,8 @@ def show_all_notes(notes: NoteBook):
 
 
 # ---------------------------------------------------------------------------
-# Help / menu
+# Entry point
 # ---------------------------------------------------------------------------
-HELP_TEXT = """\
-Available commands:
-  Contacts:
-    add-contact <name> <phone>              - add a contact or a phone to an existing one
-    change-phone <name> <old> <new>         - change a contact's phone number
-    phone <name>                            - show a contact's phone numbers
-    add-birthday <name> <DD.MM.YYYY>        - add a birthday to a contact
-    edit-birthday <name> <DD.MM.YYYY>       - change a contact's birthday
-    show-birthday <name>                    - show a contact's birthday
-    birthdays [days]                        - show birthdays in the next N days (default 7)
-    add-email <name> <email>                - add an email to a contact
-    edit-email <name> <new_email>           - change a contact's email
-    add-address <name> <address...>         - add an address to a contact
-    delete-contact <name>                   - delete a contact
-    all-contacts                            - show all contacts
-
-  Notes:
-    add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
-    edit-note <id> <new text...>            - edit a note's text
-    delete-note <id>                        - delete a note
-    find-note <keyword>                     - find notes by title or text
-    search-notes-tag <tag>                  - find notes by tag
-    all-notes                               - show all notes
-
-  General:
-    help                                    - show this help message
-    close / exit                            - save data and exit the assistant
-"""
-
-
 def restore_note_id_counter(notes: NoteBook):
     """Make sure new notes get ids after the highest loaded id."""
     if notes.data:
