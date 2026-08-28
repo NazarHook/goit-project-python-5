@@ -26,6 +26,9 @@ class Field:
             return self.value == other.value
         return self.value == other
 
+    def __hash__(self):
+        return hash(self.value)
+
 
 class Name(Field):
     """Contact's name. Required, non-empty."""
