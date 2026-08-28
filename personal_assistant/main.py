@@ -6,7 +6,7 @@ Run with:
 Type `help` inside the program to see the list of available commands.
 """
 
-from address_book import AddressBook, Record, FieldError
+from address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
 from note_book import Note, NoteBook, NoteError
 from storage import save_data, load_data
 
@@ -106,7 +106,7 @@ def show_birthday(args, book: AddressBook):
 
 @input_error
 def birthdays(args, book: AddressBook):
-    days = int(args[0]) if args else 7
+    days = int(args[0]) if args else DEFAULT_BIRTHDAY_WINDOW_DAYS
     upcoming = book.get_upcoming_birthdays(days)
     if not upcoming:
         return f"No birthdays in the next {days} days."

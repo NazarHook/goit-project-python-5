@@ -9,6 +9,9 @@ class FieldError(ValueError):
     """Raised when a field value fails validation."""
 
 
+DEFAULT_BIRTHDAY_WINDOW_DAYS = 7
+
+
 class Field:
     """Base class for all record fields."""
 
@@ -174,7 +177,7 @@ class AddressBook(UserDict):
             return True
         return False
 
-    def get_upcoming_birthdays(self, days=7):
+    def get_upcoming_birthdays(self, days=DEFAULT_BIRTHDAY_WINDOW_DAYS):
         """Return records whose birthday falls within the next `days` days."""
         upcoming = []
         for record in self.data.values():
