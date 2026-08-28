@@ -7,7 +7,7 @@ Type `help` inside the program to see the list of available commands.
 """
 
 from address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
-from note_book import Note, NoteBook, NoteError
+from note_book import NoteBook, NoteError
 from storage import save_data, load_data
 
 CONTACTS_FILE = "address_book.pkl"
@@ -281,16 +281,9 @@ def show_all_notes(notes: NoteBook):
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
-def restore_note_id_counter(notes: NoteBook):
-    """Make sure new notes get ids after the highest loaded id."""
-    if notes.data:
-        Note._id_counter = iter(range(max(notes.data.keys()) + 1, 10**9))
-
-
 def main():
     book = load_data(CONTACTS_FILE, AddressBook)
     notes = load_data(NOTES_FILE, NoteBook)
-    restore_note_id_counter(notes)
 
     print("Welcome to the Personal Assistant!")
     print("Type 'help' to see the list of commands.")

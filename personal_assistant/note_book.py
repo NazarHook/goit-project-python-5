@@ -2,7 +2,6 @@
 
 from collections import UserDict
 from datetime import datetime
-from itertools import count
 
 
 class NoteError(ValueError):
@@ -12,13 +11,11 @@ class NoteError(ValueError):
 class Note:
     """A single note: id, title, text and a list of tags."""
 
-    _id_counter = count(1)
-
-    def __init__(self, title, text="", tags=None):
+    def __init__(self, note_id, title, text="", tags=None):
         title = (title or "").strip()
         if not title:
             raise NoteError("Note title cannot be empty.")
-        self.id = next(Note._id_counter)
+        self.id = note_id
         self.title = title
         self.text = text.strip() if text else ""
         self.tags = self._normalize_tags(tags)
@@ -66,10 +63,23 @@ class Note:
 
  
 class NoteBook(UserDict):
-    """A collection of Notes keyed by their numeric id."""
+    """A collection of Notes keyed by their numeric id.
+
+    Owns note id assignment: add_note() hands out the next id itself,
+    so nothing outside this class needs to touch id bookkeeping.
+    """
+
+    def _next_note_id(self):
+        if not hasattr(self, "_next_id"):
+            # Not set yet - either a brand new NoteBook, or one restored
+            # from an older pickle file that predates this attribute.
+            # Either way, derive it from whatever notes are already here.
+            self._next_id = (max(self.data.keys()) + 1) if self.data else 1
+        return self._next_id
 
     def add_note(self, title, text="", tags=None):
-        note = Note(title, text, tags)
+        note = Note(self._next_note_id(), title, text, tags)
+        self._next_id += 1
         self.data[note.id] = note
         return note
 
