@@ -78,6 +78,20 @@ def show_phone(args, book: AddressBook):
     return f"{name}: {phones}"
 
 
+@input_error
+def delete_contact(args, book: AddressBook):
+    if len(args) != 1:
+        return "Usage: delete-contact <name>"
+    (name,) = args
+    if book.delete(name):
+        return "Contact deleted."
+    return f"Contact '{name}' not found."
+
+
+def show_all_contacts(book: AddressBook):
+    return str(book)
+
+
 # ---- Birthdays & other -------------------------------------------------
 @input_error
 def add_birthday(args, book: AddressBook):
@@ -164,20 +178,6 @@ def add_address(args, book: AddressBook):
         return f"Contact '{name}' not found."
     record.add_address(" ".join(address_parts))
     return "Address added."
-
-
-@input_error
-def delete_contact(args, book: AddressBook):
-    if len(args) != 1:
-        return "Usage: delete-contact <name>"
-    (name,) = args
-    if book.delete(name):
-        return "Contact deleted."
-    return f"Contact '{name}' not found."
-
-
-def show_all_contacts(book: AddressBook):
-    return str(book)
 
 
 # ---------------------------------------------------------------------------
