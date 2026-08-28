@@ -8,6 +8,11 @@ class NoteError(ValueError):
     """Raised when a note operation fails validation."""
 
 
+def _normalize_tag(tag):
+    """Normalize a single tag: strip whitespace, lowercase, drop leading '#'."""
+    return (tag or "").strip().lower().lstrip("#")
+
+
 class Note:
     """A single note: id, title, text and a list of tags."""
 
@@ -27,18 +32,18 @@ class Note:
             return []
         normalized = []
         for tag in tags:
-            tag = tag.strip().lower().lstrip("#")
+            tag = _normalize_tag(tag)
             if tag and tag not in normalized:
                 normalized.append(tag)
         return normalized
 
     def add_tag(self, tag):
-        tag = tag.strip().lower().lstrip("#")
+        tag = _normalize_tag(tag)
         if tag and tag not in self.tags:
             self.tags.append(tag)
 
     def remove_tag(self, tag):
-        tag = tag.strip().lower().lstrip("#")
+        tag = _normalize_tag(tag)
         if tag in self.tags:
             self.tags.remove(tag)
 
@@ -101,7 +106,7 @@ class NoteBook(UserDict):
         return [n for n in self.data.values() if keyword in n.text.lower()]
 
     def find_by_tag(self, tag):
-        tag = tag.strip().lower().lstrip("#")
+        tag = _normalize_tag(tag)
         return [n for n in self.data.values() if tag in n.tags]
 
     def all_notes(self):
