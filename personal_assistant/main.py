@@ -34,6 +34,7 @@ Available commands:
   Notes:
     add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
     edit-note <id> <new text...>            - edit a note's text
+    edit-title <id> <new title...>          - edit a note's title
     add-tag <id> <tag>                      - add a tag to an existing note
     remove-tag <id> <tag>                   - remove a tag from an existing note
     delete-note <id>                        - delete a note
@@ -269,6 +270,18 @@ def edit_note(args, notes: NoteBook):
 
 
 @input_error
+def edit_title(args, notes: NoteBook):
+    if len(args) < 2:
+        return "Usage: edit-title <id> <new title...>"
+    note_id, *title_parts = args
+    note = notes.find_note(int(note_id))
+    if note is None:
+        return f"Note {note_id} not found."
+    note.edit_title(" ".join(title_parts))
+    return "Title updated."
+
+
+@input_error
 def add_tag(args, notes: NoteBook):
     if len(args) != 2:
         return "Usage: add-tag <id> <tag>"
@@ -386,6 +399,8 @@ def main():
             print(add_note(args, notes))
         elif command == "edit-note":
             print(edit_note(args, notes))
+        elif command == "edit-title":
+            print(edit_title(args, notes))
         elif command == "add-tag":
             print(add_tag(args, notes))
         elif command == "remove-tag":
