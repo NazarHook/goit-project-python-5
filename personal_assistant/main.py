@@ -92,6 +92,20 @@ def add_birthday(args, book: AddressBook):
 
 
 @input_error
+def edit_birthday(args, book: AddressBook):
+    if len(args) != 2:
+        return "Usage: edit-birthday <name> <DD.MM.YYYY>"
+    name, birthday = args
+    record = book.find(name)
+    if record is None:
+        return f"Contact '{name}' not found."
+    if not record.birthday:
+        return f"{name} has no birthday yet. Use add-birthday to set one."
+    record.add_birthday(birthday)
+    return "Birthday updated."
+
+
+@input_error
 def show_birthday(args, book: AddressBook):
     if len(args) != 1:
         return "Usage: show-birthday <name>"
@@ -238,6 +252,7 @@ Available commands:
     change-phone <name> <old> <new>         - change a contact's phone number
     phone <name>                            - show a contact's phone numbers
     add-birthday <name> <DD.MM.YYYY>        - add a birthday to a contact
+    edit-birthday <name> <DD.MM.YYYY>       - change a contact's birthday
     show-birthday <name>                    - show a contact's birthday
     birthdays [days]                        - show birthdays in the next N days (default 7)
     add-email <name> <email>                - add an email to a contact
@@ -297,6 +312,8 @@ def main():
             print(show_all_contacts(book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
+        elif command == "edit-birthday":
+            print(edit_birthday(args, book))
         elif command == "show-birthday":
             print(show_birthday(args, book))
         elif command == "birthdays":
