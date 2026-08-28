@@ -6,7 +6,14 @@ Run with:
 Type `help` inside the program to see the list of available commands.
 """
 
-from colorama import init as colorama_init, Fore
+try:
+    from colorama import init as colorama_init, Fore
+except ImportError:  # colorama is optional: without it the CLI just prints plain text
+    class Fore:
+        GREEN = RED = RESET = ""
+
+    def colorama_init(**kwargs):
+        pass
 
 from address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
 from note_book import NoteBook, NoteError
