@@ -171,6 +171,23 @@ class AddressBook(UserDict):
     def find(self, name):
         return self.data.get(name)
 
+    def search(self, query):
+        """Find contacts whose name, phone, email or address contains
+        `query` (case-insensitive substring match)."""
+        query = query.strip().lower()
+        if not query:
+            return []
+
+        def matches(record):
+            fields = [record.name.value] + [p.value for p in record.phones]
+            if record.email:
+                fields.append(record.email.value)
+            if record.address:
+                fields.append(record.address.value)
+            return any(query in f.lower() for f in fields)
+
+        return [r for r in self.data.values() if matches(r)]
+
     def delete(self, name):
         if name in self.data:
             del self.data[name]

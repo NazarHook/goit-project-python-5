@@ -29,6 +29,7 @@ Available commands:
     add-address <name> <address...>         - add an address to a contact
     delete-contact <name>                   - delete a contact
     all-contacts                            - show all contacts
+    search-contact <query>                  - find contacts by name, phone, email or address
 
   Notes:
     add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
@@ -132,6 +133,16 @@ def delete_contact(args, book: AddressBook):
 
 def show_all_contacts(book: AddressBook):
     return str(book)
+
+
+@input_error
+def search_contacts(args, book: AddressBook):
+    if not args:
+        return "Usage: search-contact <query>"
+    found = book.search(" ".join(args))
+    if not found:
+        return "No matching contacts found."
+    return "\n".join(str(r) for r in found)
 
 
 # ---- Birthdays & other -------------------------------------------------
@@ -324,6 +335,8 @@ def main():
             print(show_phone(args, book))
         elif command == "all-contacts":
             print(show_all_contacts(book))
+        elif command == "search-contact":
+            print(search_contacts(args, book))
         elif command == "add-birthday":
             print(add_birthday(args, book))
         elif command == "edit-birthday":
