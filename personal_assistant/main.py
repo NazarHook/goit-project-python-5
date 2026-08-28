@@ -78,6 +78,7 @@ def show_phone(args, book: AddressBook):
     return f"{name}: {phones}"
 
 
+# ---- Birthdays & other -------------------------------------------------
 @input_error
 def add_birthday(args, book: AddressBook):
     if len(args) != 2:
