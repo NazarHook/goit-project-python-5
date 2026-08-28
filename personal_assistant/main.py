@@ -35,6 +35,7 @@ Available commands:
     add-note <title> [| <text>] [#tag ...]  - add a note, optionally with text and tags
     edit-note <id> <new text...>            - edit a note's text
     add-tag <id> <tag>                      - add a tag to an existing note
+    remove-tag <id> <tag>                   - remove a tag from an existing note
     delete-note <id>                        - delete a note
     find-note <keyword>                     - find notes by title or text
     search-notes-tag <tag>                  - find notes by tag
@@ -280,6 +281,18 @@ def add_tag(args, notes: NoteBook):
 
 
 @input_error
+def remove_tag(args, notes: NoteBook):
+    if len(args) != 2:
+        return "Usage: remove-tag <id> <tag>"
+    note_id, tag = args
+    note = notes.find_note(int(note_id))
+    if note is None:
+        return f"Note {note_id} not found."
+    note.remove_tag(tag)
+    return "Tag removed."
+
+
+@input_error
 def delete_note(args, notes: NoteBook):
     if len(args) != 1:
         return "Usage: delete-note <id>"
@@ -375,6 +388,8 @@ def main():
             print(edit_note(args, notes))
         elif command == "add-tag":
             print(add_tag(args, notes))
+        elif command == "remove-tag":
+            print(remove_tag(args, notes))
         elif command == "delete-note":
             print(delete_note(args, notes))
         elif command == "find-note":
