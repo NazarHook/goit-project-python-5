@@ -47,5 +47,5 @@ Once running, type `help` to see the full list of available commands, e.g.:
 
 ## Authors
 
-- Developer 1 - address book module
-- Developer 2 - note book module
+- **olev0885-design** — developer: `main.py` (CLI), `address_book.py` (contacts), `note_book.py` (notes), `storage.py` (persistence)
+- **NazarHook** — code review and feedback
