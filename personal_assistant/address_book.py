@@ -161,6 +161,8 @@ class AddressBook(UserDict):
     """A collection of Records keyed by contact name."""
 
     def add_record(self, record):
+        if record.name.value in self.data:
+            raise FieldError(f"Contact '{record.name.value}' already exists.")
         self.data[record.name.value] = record
 
     def find(self, name):
