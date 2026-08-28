@@ -281,7 +281,10 @@ def find_notes(args, notes: NoteBook):
     if not args:
         return "Usage: find-note <keyword>"
     keyword = " ".join(args)
-    found = notes.find_by_title(keyword) or notes.find_by_text(keyword)
+    by_title = notes.find_by_title(keyword)
+    by_text = notes.find_by_text(keyword)
+    seen_ids = {n.id for n in by_title}
+    found = by_title + [n for n in by_text if n.id not in seen_ids]
     if not found:
         return "No matching notes found."
     return "\n".join(str(n) for n in found)
