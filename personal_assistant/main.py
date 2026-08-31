@@ -15,9 +15,9 @@ except ImportError:  # colorama is optional: without it the CLI just prints plai
     def colorama_init(**kwargs):
         pass
 
-from address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
-from note_book import NoteBook, NoteError
-from storage import save_data, load_data
+from .address_book import AddressBook, Record, FieldError, DEFAULT_BIRTHDAY_WINDOW_DAYS
+from .note_book import NoteBook, NoteError
+from .storage import save_data, load_data
 
 colorama_init(autoreset=True)
 
