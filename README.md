@@ -39,17 +39,25 @@
 
 ## 📁 Структура проєкту
 
-| Файл | Призначення |
-|---|---|
-| `main.py` | Точка входу: цикл команд, обробники, `help` |
-| `address_book.py` | Класи `Field`, `Record`, `AddressBook` — контакти |
-| `note_book.py` | Класи `Note`, `NoteBook` — нотатки й теги |
-| `storage.py` | Збереження / завантаження даних (`pickle`) |
-| `requirements.txt` | Залежності |
+```
+goit-project-python-5/
+├── personal_assistant/       # пакет застосунку
+│   ├── __init__.py
+│   ├── __main__.py           # запуск через `python -m personal_assistant`
+│   ├── main.py               # точка входу: цикл команд, обробники, help
+│   ├── address_book.py       # класи Field, Record, AddressBook — контакти
+│   ├── note_book.py          # класи Note, NoteBook — нотатки й теги
+│   └── storage.py            # збереження / завантаження (pickle)
+├── pyproject.toml            # метадані пакета та точка входу
+├── requirements.txt          # залежності
+└── README.md
+```
 
 ---
 
 ## 🚀 Встановлення та запуск
+
+Застосунок встановлюється як **Python-пакет** і запускається **з будь-якого місця системи**.
 
 ```bash
 # 1. Клонувати репозиторій
@@ -60,11 +68,23 @@ cd goit-project-python-5
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 
-# 3. Встановити залежності (опційно — для кольорового виводу)
-pip install -r requirements.txt
+# 3. Встановити застосунок
+pip install .                    # або: pip install -e .  (режим розробки)
 
-# 4. Запустити помічника
-python main.py
+# 4. Запустити з будь-якої теки
+personal-assistant
+```
+
+### Альтернативні способи запуску
+
+```bash
+python -m personal_assistant     # як модуль (після встановлення)
+```
+
+Без встановлення — з кореня репозиторію:
+```bash
+pip install -r requirements.txt
+python -m personal_assistant
 ```
 
 ---
